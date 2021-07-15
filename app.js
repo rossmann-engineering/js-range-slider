@@ -284,7 +284,7 @@ class Slider {
         }
         if (!this.mouseDown) return;
         this.mouseDown = false;
-        this.activeSlider = null;
+        //this.activeSlider = null;
     }
 
     /**
