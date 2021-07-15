@@ -24,6 +24,7 @@ class Slider {
         this.handleStrokeThickness = 3;                             // Slider handle stroke thickness    
         this.mouseDown = false;                                     // Is mouse down
         this.activeSlider = null;                                   // Stores active (selected) slider
+        this.activeSliderNumber = 0;
         this.scale = scale;
         this.listener = null;
         this.currentValue = 0;
@@ -234,9 +235,9 @@ class Slider {
      * @param {number} currentAngle 
      */
     updateLegendUI(currentAngle) {
-        const targetSlider = this.activeSlider.getAttribute('data-slider');
+        this.targetSliderNumber = this.activeSlider.getAttribute('data-slider');
         //const targetLegend = document.querySelector(`li[data-slider="${targetSlider}"] .sliderValue`);
-        const currentSlider = this.sliders[targetSlider];
+        const currentSlider = this.sliders[this.targetSliderNumber];
         const currentSliderRange = currentSlider.max - currentSlider.min;
         this.currentValue = currentAngle / this.tau * currentSliderRange;
         const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
@@ -280,7 +281,7 @@ class Slider {
     mouseTouchEnd() {
         if (this.listener !== null)
         {
-            this.listener (  this.activeSlider.getAttribute('data-slider'),  this.currentValue  )
+            this.listener (  this.targetSliderNumber,  this.currentValue  )
         }
         if (!this.mouseDown) return;
         this.mouseDown = false;
