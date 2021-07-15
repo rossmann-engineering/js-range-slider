@@ -193,6 +193,7 @@ class Slider {
             li.appendChild(thirdSpan);
             display.appendChild(li);
         });
+        display.style.style="transform-origin: left 2px"
         display.style.transform =  "scale("+ 1/this.scale + ")";
         // Append to DOM
         this.container.appendChild(display);
