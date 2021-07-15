@@ -6,7 +6,7 @@ class Slider {
      * @param {string} DOM selector
      * @param {array} sliders
      */
-    constructor({ DOMselector, sliders }) {
+    constructor({ DOMselector, sliders , scale}) {
         this.DOMselector = DOMselector;
         this.container = document.querySelector(this.DOMselector);  // Slider container
         this.sliderWidth = 400;                                     // Slider width
@@ -24,6 +24,13 @@ class Slider {
         this.handleStrokeThickness = 3;                             // Slider handle stroke thickness    
         this.mouseDown = false;                                     // Is mouse down
         this.activeSlider = null;                                   // Stores active (selected) slider
+        this.scale = scale;
+        if (true) {
+            this.sliderWidth = 400 / this.scale;                                     // Slider width
+            this.sliderHeight = 400 / this.scale;                                    // Slider length
+            this.cx = this.sliderWidth / 2;                             // Slider center X coordinate
+            this.cy = this.sliderHeight / 2;                            // Slider center Y coordinate
+        }
     }
 
     /**
@@ -66,7 +73,10 @@ class Slider {
     drawSingleSliderOnInit(svg, slider, index) {
 
         // Default slider opts, if none are set
-        slider.radius = slider.radius ?? 50;
+        if (this.scale > 0)
+            slider.radius = (slider.radius / this.scale) ?? 50;
+        else
+            slider.radius = slider.radius;
         slider.min = slider.min ?? 0;
         slider.max = slider.max ?? 1000;
         slider.step = slider.step ?? 50;
@@ -120,7 +130,7 @@ class Slider {
         path.classList.add(pathClass);
         path.setAttribute('d', this.describeArc(this.cx, this.cy, radius, 0, angle));
         path.style.stroke = color;
-        path.style.strokeWidth = this.arcFractionThickness;
+        path.style.strokeWidth = this.arcFractionThickness/this.scale;
         path.style.fill = 'none';
         path.setAttribute('stroke-dasharray', this.arcFractionLength + ' ' + singleSpacing);
         group.appendChild(path);
@@ -143,7 +153,7 @@ class Slider {
         handle.setAttribute('class', 'sliderHandle');
         handle.setAttribute('cx', handleCenter.x);
         handle.setAttribute('cy', handleCenter.y);
-        handle.setAttribute('r', this.arcFractionThickness / 2);
+        handle.setAttribute('r', this.arcFractionThickness / (this.scale * 2));
         handle.style.stroke = this.handleStrokeColor;
         handle.style.strokeWidth = this.handleStrokeThickness;
         handle.style.fill = this.handleFillColor;
@@ -174,6 +184,7 @@ class Slider {
             firstSpan.classList.add('colorSquare');
             const secondSpan = document.createElement('span');
             secondSpan.innerText = slider.displayName ?? 'Unnamed value';
+            secondSpan.classList.add('sliderValue');
             const thirdSpan = document.createElement('span');
             thirdSpan.innerText = slider.initialValue ?? 0;
             thirdSpan.classList.add('sliderValue');
@@ -182,7 +193,7 @@ class Slider {
             li.appendChild(thirdSpan);
             display.appendChild(li);
         });
-
+        display.style.transform =  "scale("+ 1/this.scale + ")";
         // Append to DOM
         this.container.appendChild(display);
     }

@@ -55,6 +55,10 @@ h1 {
 
 .slider__legend li span:nth-child(2) {
   margin: 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+  min-width: 60px;
 }
 
 .slider__legend li span:last-child {
