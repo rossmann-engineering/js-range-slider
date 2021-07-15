@@ -235,9 +235,9 @@ class Slider {
      * @param {number} currentAngle 
      */
     updateLegendUI(currentAngle) {
-        this.targetSliderNumber = this.activeSlider.getAttribute('data-slider');
+        this.activeSliderNumber = this.activeSlider.getAttribute('data-slider');
         //const targetLegend = document.querySelector(`li[data-slider="${targetSlider}"] .sliderValue`);
-        const currentSlider = this.sliders[this.targetSliderNumber];
+        const currentSlider = this.sliders[this.activeSliderNumber];
         const currentSliderRange = currentSlider.max - currentSlider.min;
         this.currentValue = currentAngle / this.tau * currentSliderRange;
         const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
@@ -281,7 +281,7 @@ class Slider {
     mouseTouchEnd() {
         if (this.listener !== null)
         {
-            this.listener (  this.targetSliderNumber,  this.currentValue  )
+            this.listener (  this.activeSliderNumber,  this.currentValue  )
         }
         if (!this.mouseDown) return;
         this.mouseDown = false;
