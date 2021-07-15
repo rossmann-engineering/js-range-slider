@@ -279,11 +279,12 @@ class Slider {
      * 
      */
     mouseTouchEnd() {
+
+        if (!this.mouseDown) return;
         if (this.listener !== null)
         {
             this.listener (  this.activeSliderNumber,  this.currentValue  )
         }
-        if (!this.mouseDown) return;
         this.mouseDown = false;
         //this.activeSlider = null;
     }
