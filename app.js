@@ -40,7 +40,7 @@ class Slider {
     draw() {
 
         // Create legend UI
-        this.createLegendUI();
+        //this.createLegendUI();
 
         // Create and append SVG holder
         const svgContainer = document.createElement('div');
