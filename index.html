@@ -55,11 +55,14 @@
                     displayName: 'Value 3'
                 }
             ],
-            scale: 5
+            scale: 1
         };
 
         // instantiate the slider
         const slider = new Slider(opts);
+        slider.listener = function (handle, value){
+            console.log (handle);
+        }
         slider.draw();
     </script>
 </body>

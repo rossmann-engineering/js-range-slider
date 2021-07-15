@@ -25,6 +25,8 @@ class Slider {
         this.mouseDown = false;                                     // Is mouse down
         this.activeSlider = null;                                   // Stores active (selected) slider
         this.scale = scale;
+        this.listener = null;
+        this.currentValue = 0;
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -219,8 +221,11 @@ class Slider {
         handle.setAttribute('cx', handleCenter.x);
         handle.setAttribute('cy', handleCenter.y);
 
+
         // Update legend
         this.updateLegendUI(currentAngle);
+
+
     }
 
     /**
@@ -230,13 +235,16 @@ class Slider {
      */
     updateLegendUI(currentAngle) {
         const targetSlider = this.activeSlider.getAttribute('data-slider');
-        const targetLegend = document.querySelector(`li[data-slider="${targetSlider}"] .sliderValue`);
+        //const targetLegend = document.querySelector(`li[data-slider="${targetSlider}"] .sliderValue`);
         const currentSlider = this.sliders[targetSlider];
         const currentSliderRange = currentSlider.max - currentSlider.min;
-        let currentValue = currentAngle / this.tau * currentSliderRange;
-        const numOfSteps =  Math.round(currentValue / currentSlider.step);
-        currentValue = currentSlider.min + numOfSteps * currentSlider.step;
-        targetLegend.innerText = currentValue;
+        this.currentValue = currentAngle / this.tau * currentSliderRange;
+        const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
+        this.currentValue = currentSlider.min + numOfSteps * currentSlider.step;
+        //targetLegend.innerText = currentValue;
+
+
+
     }
 
     /**
@@ -270,6 +278,10 @@ class Slider {
      * 
      */
     mouseTouchEnd() {
+        if (this.listener !== null)
+        {
+            this.listener (  this.activeSlider,  this.currentValue  )
+        }
         if (!this.mouseDown) return;
         this.mouseDown = false;
         this.activeSlider = null;
