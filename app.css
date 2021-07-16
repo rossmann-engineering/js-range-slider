@@ -5,7 +5,7 @@
   margin: 0;
 }
 
-.tooltip .tooltiptext {
+.multislidertooltip .multislidertooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: black;

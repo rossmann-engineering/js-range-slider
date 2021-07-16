@@ -28,7 +28,7 @@ class Slider {
         this.listener = null;
         this.currentValue = 0;
         this.svgContainer = null;
-        this.tooltiptext = null;
+        this.tooltipText = null;
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -49,14 +49,14 @@ class Slider {
 
         // Create and append SVG holder
         this.svgContainer = document.createElement('div');
-        this.svgContainer.classList.add('tooltip');
+        this.svgContainer.classList.add('multislidertooltip');
         this.svgContainer.classList.add('slider__data');
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('height', this.sliderWidth);
         svg.setAttribute('width', this.sliderHeight);
         this.svgContainer.appendChild(svg);
         this.tooltipText = document.createElement('span');
-        this.tooltipText.classList.add('tooltiptext');
+        this.tooltipText.classList.add('multislidertooltiptext');
         this.tooltipText.innerText = 'tooltip'
         this.svgContainer.appendChild(this.tooltipText)
         this.container.appendChild( this.svgContainer);
