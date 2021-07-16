@@ -28,6 +28,7 @@ class Slider {
         this.listener = null;
         this.currentValue = 0;
         this.svgContainer = null;
+        this.tooltiptext = null;
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -48,11 +49,16 @@ class Slider {
 
         // Create and append SVG holder
         this.svgContainer = document.createElement('div');
+        this.svgContainer.classList.add('tooltip');
         this.svgContainer.classList.add('slider__data');
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('height', this.sliderWidth);
         svg.setAttribute('width', this.sliderHeight);
         this.svgContainer.appendChild(svg);
+        this.tooltipText = document.createElement('span');
+        this.tooltipText.classList.add('tooltiptext');
+        this.tooltipText.innerText = 'tooltip'
+        this.svgContainer.appendChild(this.tooltipText)
         this.container.appendChild( this.svgContainer);
 
         // Draw sliders
@@ -227,6 +233,11 @@ class Slider {
         // Update legend
         this.updateLegendUI(currentAngle);
 
+        console.log (rmc);
+
+        this.tooltipText.style.top = this.svgContainer.getBoundingClientRect().top + rmc.y + "px";
+        this.tooltipText.style.left = this.svgContainer.getBoundingClientRect().left + rmc.x + "px";
+
 
     }
 
@@ -244,6 +255,7 @@ class Slider {
         const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
         this.currentValue = currentSlider.min + numOfSteps * currentSlider.step;
         //targetLegend.innerText = currentValue;
+        this.tooltipText.innerText = this.sliders[this.activeSliderNumber].displayName + ": " +this.currentValue;
 
 
 
@@ -260,6 +272,11 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         this.findClosestSlider(rmc);
         this.redrawActiveSlider(rmc);
+
+
+        this.tooltipText.style.visibility = "visible";
+        this.tooltipText.style.opacity = 1;
+
     }
 
     /**
@@ -271,6 +288,7 @@ class Slider {
         if (!this.mouseDown) return;
         e.preventDefault();
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
+        console.log (e)
         this.redrawActiveSlider(rmc);
     }
 
@@ -288,6 +306,7 @@ class Slider {
         }
         this.mouseDown = false;
         //this.activeSlider = null;
+        this.tooltipText.style.visibility = "hidden";
     }
 
     /**
