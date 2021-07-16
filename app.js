@@ -8,7 +8,7 @@ class Slider {
      */
     constructor({ DOMselector, sliders , scale}) {
         this.DOMselector = DOMselector;
-        this.container = document.querySelector(this.DOMselector);  // Slider container
+        this.container = (this.DOMselector);  // Slider container
         this.sliderWidth = 400;                                     // Slider width
         this.sliderHeight = 400;                                    // Slider length
         this.cx = this.sliderWidth / 2;                             // Slider center X coordinate
