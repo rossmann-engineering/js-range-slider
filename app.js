@@ -235,8 +235,7 @@ class Slider {
 
         console.log (rmc);
 
-        this.tooltipText.style.top = this.svgContainer.getBoundingClientRect().top + rmc.y + "px";
-        this.tooltipText.style.left = this.svgContainer.getBoundingClientRect().left + rmc.x + "px";
+
 
 
     }
@@ -290,6 +289,8 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         console.log (e)
         this.redrawActiveSlider(rmc);
+        this.tooltipText.style.top = e.pageY + "px";
+        this.tooltipText.style.left = e.pageX + "px";
     }
 
     /**
