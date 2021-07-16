@@ -233,7 +233,6 @@ class Slider {
         // Update legend
         this.updateLegendUI(currentAngle);
 
-        console.log (rmc);
 
 
 
@@ -287,10 +286,9 @@ class Slider {
         if (!this.mouseDown) return;
         e.preventDefault();
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
-        console.log (e)
         this.redrawActiveSlider(rmc);
-        this.tooltipText.style.top = e.pageY + "px";
-        this.tooltipText.style.left = e.pageX + "px";     //offsetX
+        this.tooltipText.style.top = e.offsetY + "px";
+        this.tooltipText.style.left = e.offsetX + "px";     //offsetX
     }
 
     /**
