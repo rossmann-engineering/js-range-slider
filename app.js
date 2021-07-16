@@ -74,9 +74,9 @@ class Slider {
         window.addEventListener('touchend', this.mouseTouchEnd.bind(this), false);
 
 
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n";
-        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
-        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
+        +  this.sliders[1].displayName + ": " +this.values[1] + "\n"
+        +  this.sliders[2].displayName + ": " +this.values[2];
 
     }
 
@@ -264,9 +264,9 @@ class Slider {
         //targetLegend.innerText = currentValue;
         this.values[this.activeSliderNumber] = this.currentValue;
 
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n";
-        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
-        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
+            + this.sliders[1].displayName + ": " +this.values[1] + "\n"
+            + this.sliders[2].displayName + ": " +this.values[2];
 
     }
 
@@ -281,9 +281,9 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         this.findClosestSlider(rmc);
         this.redrawActiveSlider(rmc);
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n";
-        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
-        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
+            +  this.sliders[1].displayName + ": " +this.values[1] + "\n"
+            +  this.sliders[2].displayName + ": " +this.values[2];
 
         this.tooltipText.style.visibility = "visible";
         this.tooltipText.style.opacity = 1;
