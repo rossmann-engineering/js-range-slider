@@ -116,8 +116,14 @@ class Slider {
         // Draw active arc path
         this.drawArcPath(slider.color, slider.radius, initialAngle, arcFractionSpacing, 'active', sliderGroup);
 
+        // Draw text
+        this.drawBanner(null, sliderGroup);
+
         // Draw handle
         this.drawHandle(slider, initialAngle, sliderGroup);
+
+        // Draw text
+        this.drawBanner(null, sliderGroup);
     }
 
     /**
@@ -238,6 +244,42 @@ class Slider {
 
 
     }
+
+
+    drawBanner(rmc, group){
+        // get text value from the input
+
+        // set new text vertical position
+        var h = 22;
+        // create a new text node to add to the SVG block
+        var newText = document.createElementNS("http://www.w3.org/2000/svg","text");
+        newText.setAttributeNS(null,"x",this.cx);
+        newText.setAttributeNS(null,"y",this.cy);
+        newText.setAttributeNS(null,"width","auto");
+        newText.setAttributeNS(null,"height","100%");
+        newText.setAttributeNS(null,"font-size","20");
+        newText.setAttributeNS(null,"writing-mode","tb");
+
+        newText.appendChild(document.createTextNode('fdv'));
+
+        // add the text node to the SVG element
+        group.appendChild(newText);
+
+
+
+        var rectobj = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rectobj.setAttribute('x', this.cx);
+        rectobj.setAttribute('y', this.cy);
+        rectobj.setAttribute('height', 100);
+        rectobj.setAttribute('width',100);
+        rectobj.setAttribute('fill','blue');
+        group.appendChild(rectobj);
+
+    }
+
+
+
+
 
     /**
      * Update legend UI
