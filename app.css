@@ -13,12 +13,11 @@
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-  left: 500px;
-  top: 200px;
+
 
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  z-index: 5;
   opacity: 0;
   transition: opacity 1s;
 }
