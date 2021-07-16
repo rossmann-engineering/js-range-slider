@@ -13,64 +13,60 @@
 
 <body>
 
-    <div class="container">
-        <h1>JS Round Range Slider App</h1>
+<div class="container">
+    <h1>JS Round Range Slider App</h1>
 
-        <!-- slider app container -->
-        <div id="app" class="multislidertooltip">
-
-            <span class = "multislidertooltiptext"></span>
-        </div>
+    <!-- slider app container -->
+    <div id="app"></div>
 
 
-    </div>
+</div>
 
-    <script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="app.js"></script>
 
-    <script>
-        // slider app options
-        const opts = {
-            DOMselector: document.getElementById('app'),
-            sliders: [
-                {
-                    radius: 100,
-                    min: 0,
-                    max: 100,
-                    step: 10,
-                    initialValue: 50,
-                    color: '#fdcb6e',
-                    displayName: 'Value 1'
-                },
-                {
-                    radius: 160,
-                    min: 0,
-                    max: 3000,
-                    step: 100,
-                    initialValue: 200,
-                    color: '#0984e3',
-                    displayName: 'Value 2'
-                },
-                {
-                    radius: 40,
-                    min: 0,
-                    max: 200,
-                    step: 10,
-                    initialValue: 20,
-                    color: '#d63031',
-                    displayName: 'Value 3'
-                }
-            ],
-            scale: 2
-        };
+<script>
+    // slider app options
+    const opts = {
+        DOMselector: document.getElementById('app'),
+        sliders: [
+            {
+                radius: 100,
+                min: 0,
+                max: 100,
+                step: 10,
+                initialValue: 50,
+                color: '#fdcb6e',
+                displayName: 'Value 1'
+            },
+            {
+                radius: 160,
+                min: 0,
+                max: 3000,
+                step: 100,
+                initialValue: 200,
+                color: '#0984e3',
+                displayName: 'Value 2'
+            },
+            {
+                radius: 40,
+                min: 0,
+                max: 200,
+                step: 10,
+                initialValue: 20,
+                color: '#d63031',
+                displayName: 'Value 3'
+            }
+        ],
+        scale: 2
+    };
 
-        // instantiate the slider
-        const slider = new Slider(opts);
-        slider.listener = function (handle, value){
-            console.log (handle);
-        }
-        slider.tooltiptextdom = document.getElementsByClassName('multislidertooltiptext')[0]
-        slider.draw();
-    </script>
+    // instantiate the slider
+    const slider = new Slider(opts);
+    slider.listener = function (handle, value){
+        console.log (handle);
+    }
+    slider.draw();
+</script>
 </body>
 
 </html>

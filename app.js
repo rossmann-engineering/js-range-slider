@@ -1,13 +1,12 @@
 class Slider {
     /**
      * @constructor
-     * 
+     *
      * @param {string} DOM selector
      * @param {array} sliders
      */
     constructor({ DOMselector, sliders , scale}) {
         this.DOMselector = DOMselector;
-        this.tooltiptextdom = null;
         this.container = (this.DOMselector);  // Slider container
         this.sliderWidth = 400;                                     // Slider width
         this.sliderHeight = 400;                                    // Slider length
@@ -21,7 +20,7 @@ class Slider {
         this.arcBgFractionColor = '#D8D8D8';                        // Arc fraction color for background slider
         this.handleFillColor = '#fff';                              // Slider handle fill color
         this.handleStrokeColor = '#888888';                         // Slider handle stroke color
-        this.handleStrokeThickness = 3;                             // Slider handle stroke thickness    
+        this.handleStrokeThickness = 3;                             // Slider handle stroke thickness
         this.mouseDown = false;                                     // Is mouse down
         this.activeSlider = null;                                   // Stores active (selected) slider
         this.activeSliderNumber = 0;
@@ -30,7 +29,6 @@ class Slider {
         this.currentValue = 0;
         this.svgContainer = null;
         this.tooltipText = null;
-        this.values = [0,0,0,0]
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -42,7 +40,7 @@ class Slider {
 
     /**
      * Draw sliders on init
-     * 
+     *
      */
     draw() {
 
@@ -51,13 +49,16 @@ class Slider {
 
         // Create and append SVG holder
         this.svgContainer = document.createElement('div');
-
+        this.svgContainer.classList.add('multislidertooltip');
         this.svgContainer.classList.add('slider__data');
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('height', this.sliderWidth);
         svg.setAttribute('width', this.sliderHeight);
         this.svgContainer.appendChild(svg);
-
+        this.tooltipText = document.createElement('span');
+        this.tooltipText.classList.add('multislidertooltiptext');
+        this.tooltipText.innerText = 'tooltip'
+        this.svgContainer.appendChild(this.tooltipText)
         this.container.appendChild( this.svgContainer);
 
         // Draw sliders
@@ -70,21 +71,14 @@ class Slider {
         this.svgContainer.addEventListener('touchmove', this.mouseTouchMove.bind(this), false);
         window.addEventListener('mouseup', this.mouseTouchEnd.bind(this), false);
         window.addEventListener('touchend', this.mouseTouchEnd.bind(this), false);
-
-        if (this.tooltiptextdom != null) {
-            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
-                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
-                + this.sliders[2].displayName + ": " + this.values[2];
-        }
-
     }
 
     /**
      * Draw single slider on init
-     * 
-     * @param {object} svg 
-     * @param {object} slider 
-     * @param {number} index 
+     *
+     * @param {object} svg
+     * @param {object} slider
+     * @param {number} index
      */
     drawSingleSliderOnInit(svg, slider, index) {
 
@@ -97,7 +91,6 @@ class Slider {
         slider.max = slider.max ?? 1000;
         slider.step = slider.step ?? 50;
         slider.initialValue = slider.initialValue ?? 0;
-        this.values[index] = slider.initialValue;
         slider.color = slider.color ?? '#FF5733';
 
         // Calculate slider circumference
@@ -116,7 +109,7 @@ class Slider {
         sliderGroup.setAttribute('transform', 'rotate(-90,' + this.cx + ',' + this.cy + ')');
         sliderGroup.setAttribute('rad', slider.radius);
         svg.appendChild(sliderGroup);
-        
+
         // Draw background arc path
         this.drawArcPath(this.arcBgFractionColor, slider.radius, 360, arcFractionSpacing, 'bg', sliderGroup);
 
@@ -129,13 +122,13 @@ class Slider {
 
     /**
      * Output arch path
-     * 
-     * @param {number} cx 
-     * @param {number} cy 
-     * @param {string} color 
-     * @param {number} angle 
-     * @param {number} singleSpacing 
-     * @param {string} type 
+     *
+     * @param {number} cx
+     * @param {number} cy
+     * @param {string} color
+     * @param {number} angle
+     * @param {number} singleSpacing
+     * @param {string} type
      */
     drawArcPath( color, radius, angle, singleSpacing, type, group ) {
 
@@ -155,10 +148,10 @@ class Slider {
 
     /**
      * Draw handle for single slider
-     * 
-     * @param {object} slider 
-     * @param {number} initialAngle 
-     * @param {group} group 
+     *
+     * @param {object} slider
+     * @param {number} initialAngle
+     * @param {group} group
      */
     drawHandle(slider, initialAngle, group) {
 
@@ -179,7 +172,7 @@ class Slider {
 
     /**
      * Create legend UI on init
-     * 
+     *
      */
     createLegendUI() {
 
@@ -218,7 +211,7 @@ class Slider {
 
     /**
      * Redraw active slider
-     * 
+     *
      * @param {element} activeSlider
      * @param {obj} rmc
      */
@@ -249,8 +242,8 @@ class Slider {
 
     /**
      * Update legend UI
-     * 
-     * @param {number} currentAngle 
+     *
+     * @param {number} currentAngle
      */
     updateLegendUI(currentAngle) {
         this.activeSliderNumber = this.activeSlider.getAttribute('data-slider');
@@ -261,20 +254,16 @@ class Slider {
         const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
         this.currentValue = currentSlider.min + numOfSteps * currentSlider.step;
         //targetLegend.innerText = currentValue;
-        this.values[this.activeSliderNumber] = this.currentValue;
+        this.tooltipText.innerText = this.sliders[this.activeSliderNumber].displayName + ": " +this.currentValue;
 
-        if (this.tooltiptextdom != null) {
-            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
-                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
-                + this.sliders[2].displayName + ": " + this.values[2];
-        }
+
 
     }
 
     /**
      * Mouse down / Touch start event
-     * 
-     * @param {object} e 
+     *
+     * @param {object} e
      */
     mouseTouchStart(e) {
         if (this.mouseDown) return;
@@ -282,22 +271,17 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         this.findClosestSlider(rmc);
         this.redrawActiveSlider(rmc);
-        if (this.tooltiptextdom != null) {
-            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
-                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
-                + this.sliders[2].displayName + ": " + this.values[2];
-            this.tooltiptextdom.style.visibility = "visible";
-            this.tooltiptextdom.style.opacity = 1;
-        }
 
 
+        this.tooltipText.style.visibility = "visible";
+        this.tooltipText.style.opacity = 1;
 
     }
 
     /**
      * Mouse move / touch move event
-     * 
-     * @param {object} e 
+     *
+     * @param {object} e
      */
     mouseTouchMove(e) {
         if (!this.mouseDown) return;
@@ -305,14 +289,14 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         console.log (e)
         this.redrawActiveSlider(rmc);
-
-
+        this.tooltipText.style.top = e.pageY + "px";
+        this.tooltipText.style.left = e.pageX + "px";
     }
 
     /**
      * Mouse move / touch move event
      * Deactivate slider
-     * 
+     *
      */
     mouseTouchEnd() {
 
@@ -323,17 +307,16 @@ class Slider {
         }
         this.mouseDown = false;
         //this.activeSlider = null;
-        if (this.tooltiptextdom != null)
-            this.tooltiptextdom.style.visibility = "hidden";
+        this.tooltipText.style.visibility = "hidden";
     }
 
     /**
      * Calculate number of arc fractions and space between them
-     * 
-     * @param {number} circumference 
-     * @param {number} arcBgFractionLength 
-     * @param {number} arcBgFractionBetweenSpacing 
-     * 
+     *
+     * @param {number} circumference
+     * @param {number} arcBgFractionLength
+     * @param {number} arcBgFractionBetweenSpacing
+     *
      * @returns {number} arcFractionSpacing
      */
     calculateSpacingBetweenArcFractions(circumference, arcBgFractionLength, arcBgFractionBetweenSpacing) {
@@ -344,20 +327,20 @@ class Slider {
 
     /**
      * Helper functiom - describe arc
-     * 
-     * @param {number} x 
-     * @param {number} y 
-     * @param {number} radius 
-     * @param {number} startAngle 
-     * @param {number} endAngle 
-     * 
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} radius
+     * @param {number} startAngle
+     * @param {number} endAngle
+     *
      * @returns {string} path
      */
     describeArc (x, y, radius, startAngle, endAngle) {
         let path,
-            endAngleOriginal = endAngle, 
-            start, 
-            end, 
+            endAngleOriginal = endAngle,
+            start,
+            end,
             arcSweep;
 
         if(endAngleOriginal - startAngle === 360)
@@ -374,25 +357,25 @@ class Slider {
             'A', radius, radius, 0, arcSweep, 0, end.x, end.y
         ];
 
-        if (endAngleOriginal - startAngle === 360) 
+        if (endAngleOriginal - startAngle === 360)
         {
             path.push('z');
-        } 
+        }
 
         return path.join(' ');
     }
 
     /**
      * Helper function - polar to cartesian transformation
-     * 
-     * @param {number} centerX 
-     * @param {number} centerY 
-     * @param {number} radius 
-     * @param {number} angleInDegrees 
-     * 
+     *
+     * @param {number} centerX
+     * @param {number} centerY
+     * @param {number} radius
+     * @param {number} angleInDegrees
+     *
      * @returns {object} coords
      */
-     polarToCartesian (centerX, centerY, radius, angleInDegrees) {
+    polarToCartesian (centerX, centerY, radius, angleInDegrees) {
         const angleInRadians = angleInDegrees * Math.PI / 180;
         const x = centerX + (radius * Math.cos(angleInRadians));
         const y = centerY + (radius * Math.sin(angleInRadians));
@@ -401,11 +384,11 @@ class Slider {
 
     /**
      * Helper function - calculate handle center
-     * 
-     * @param {number} angle 
+     *
+     * @param {number} angle
      * @param {number} radius
-     * 
-     * @returns {object} coords 
+     *
+     * @returns {object} coords
      */
     calculateHandleCenter (angle, radius) {
         const x = this.cx + Math.cos(angle) * radius;
@@ -415,26 +398,26 @@ class Slider {
 
     /**
      * Get mouse/touch coordinates relative to the top and left of the container
-     *  
+     *
      * @param {object} e
-     * 
+     *
      * @returns {object} coords
-     */ 
+     */
     getRelativeMouseOrTouchCoordinates (e) {
         const containerRect = this.svgContainer.getBoundingClientRect();
-        let x, 
-            y, 
-            clientPosX, 
+        let x,
+            y,
+            clientPosX,
             clientPosY;
- 
+
         // Touch Event triggered
-        if (e instanceof TouchEvent) 
+        if (e instanceof TouchEvent)
         {
             clientPosX = e.touches[0].pageX;
             clientPosY = e.touches[0].pageY;
         }
         // Mouse Event Triggered
-        else 
+        else
         {
             clientPosX = e.clientX;
             clientPosY = e.clientY;
@@ -449,19 +432,19 @@ class Slider {
 
     /**
      * Calculate mouse angle in radians
-     * 
-     * @param {object} rmc 
-     * 
+     *
+     * @param {object} rmc
+     *
      * @returns {number} angle
      */
     calculateMouseAngle(rmc) {
         const angle = Math.atan2(rmc.y - this.cy, rmc.x - this.cx);
 
-        if (angle > - this.tau / 2 && angle < - this.tau / 4) 
+        if (angle > - this.tau / 2 && angle < - this.tau / 4)
         {
             return angle + this.tau * 1.25;
-        } 
-        else 
+        }
+        else
         {
             return angle + this.tau * 0.25;
         }
@@ -469,9 +452,9 @@ class Slider {
 
     /**
      * Helper function - transform radians to degrees
-     * 
-     * @param {number} angle 
-     * 
+     *
+     * @param {number} angle
+     *
      * @returns {number} angle
      */
     radiansToDegrees(angle) {
@@ -481,7 +464,7 @@ class Slider {
     /**
      * Find closest slider to mouse pointer
      * Activate the slider
-     * 
+     *
      * @param {object} rmc
      */
     findClosestSlider(rmc) {
@@ -499,5 +482,3 @@ class Slider {
         this.activeSlider = sliderGroups[closestSliderIndex];
     }
 }
-
-  
