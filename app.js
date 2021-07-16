@@ -29,6 +29,7 @@ class Slider {
         this.currentValue = 0;
         this.svgContainer = null;
         this.tooltipText = null;
+        this.values = [0,0,0,0]
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -57,7 +58,7 @@ class Slider {
         this.svgContainer.appendChild(svg);
         this.tooltipText = document.createElement('span');
         this.tooltipText.classList.add('multislidertooltiptext');
-        this.tooltipText.innerText = 'tooltip'
+
         this.svgContainer.appendChild(this.tooltipText)
         this.container.appendChild( this.svgContainer);
 
@@ -71,6 +72,12 @@ class Slider {
         this.svgContainer.addEventListener('touchmove', this.mouseTouchMove.bind(this), false);
         window.addEventListener('mouseup', this.mouseTouchEnd.bind(this), false);
         window.addEventListener('touchend', this.mouseTouchEnd.bind(this), false);
+
+
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n";
+        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
+        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
+
     }
 
     /**
@@ -91,6 +98,7 @@ class Slider {
         slider.max = slider.max ?? 1000;
         slider.step = slider.step ?? 50;
         slider.initialValue = slider.initialValue ?? 0;
+        this.values[index] = slider.initialValue;
         slider.color = slider.color ?? '#FF5733';
 
         // Calculate slider circumference
@@ -254,9 +262,11 @@ class Slider {
         const numOfSteps =  Math.round(this.currentValue / currentSlider.step);
         this.currentValue = currentSlider.min + numOfSteps * currentSlider.step;
         //targetLegend.innerText = currentValue;
-        this.tooltipText.innerText = this.sliders[this.activeSliderNumber].displayName + ": " +this.currentValue;
+        this.values[this.activeSliderNumber] = this.currentValue;
 
-
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n";
+        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
+        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
 
     }
 
@@ -271,7 +281,9 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         this.findClosestSlider(rmc);
         this.redrawActiveSlider(rmc);
-
+        this.tooltipText.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n";
+        this.tooltipText.innerText = this.tooltipText.innerText + this.sliders[1].displayName + ": " +this.values[1] + "\n";
+        this.tooltipText.innerText =  this.tooltipText.innerText + this.sliders[2].displayName + ": " +this.values[2];
 
         this.tooltipText.style.visibility = "visible";
         this.tooltipText.style.opacity = 1;
@@ -289,8 +301,8 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         console.log (e)
         this.redrawActiveSlider(rmc);
-        this.tooltipText.style.top = e.offsetY + "px";
-        this.tooltipText.style.left = e.offsetX + "px";
+        this.tooltipText.style.top = 0 + "px";
+        this.tooltipText.style.left = 0 + "px";
     }
 
     /**
