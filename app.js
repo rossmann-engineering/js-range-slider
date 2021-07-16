@@ -384,7 +384,7 @@ class Slider {
      * @returns {object} coords
      */ 
     getRelativeMouseOrTouchCoordinates (e) {
-        const containerRect = document.querySelector('.slider__data').getBoundingClientRect();
+        const containerRect = this.svgContainer.getBoundingClientRect();
         let x, 
             y, 
             clientPosX, 
