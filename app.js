@@ -7,6 +7,7 @@ class Slider {
      */
     constructor({ DOMselector, sliders , scale}) {
         this.DOMselector = DOMselector;
+        this.tooltiptextdom = null;
         this.container = (this.DOMselector);  // Slider container
         this.sliderWidth = 400;                                     // Slider width
         this.sliderHeight = 400;                                    // Slider length
@@ -50,16 +51,13 @@ class Slider {
 
         // Create and append SVG holder
         this.svgContainer = document.createElement('div');
-        this.svgContainer.classList.add('multislidertooltip');
+
         this.svgContainer.classList.add('slider__data');
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('height', this.sliderWidth);
         svg.setAttribute('width', this.sliderHeight);
         this.svgContainer.appendChild(svg);
-        this.tooltipText = document.createElement('span');
-        this.tooltipText.classList.add('multislidertooltiptext');
 
-        this.svgContainer.appendChild(this.tooltipText)
         this.container.appendChild( this.svgContainer);
 
         // Draw sliders
@@ -73,10 +71,11 @@ class Slider {
         window.addEventListener('mouseup', this.mouseTouchEnd.bind(this), false);
         window.addEventListener('touchend', this.mouseTouchEnd.bind(this), false);
 
-
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
-        +  this.sliders[1].displayName + ": " +this.values[1] + "\n"
-        +  this.sliders[2].displayName + ": " +this.values[2];
+        if (this.tooltiptextdom != null) {
+            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
+                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
+                + this.sliders[2].displayName + ": " + this.values[2];
+        }
 
     }
 
@@ -264,9 +263,11 @@ class Slider {
         //targetLegend.innerText = currentValue;
         this.values[this.activeSliderNumber] = this.currentValue;
 
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
-            + this.sliders[1].displayName + ": " +this.values[1] + "\n"
-            + this.sliders[2].displayName + ": " +this.values[2];
+        if (this.tooltiptextdom != null) {
+            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
+                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
+                + this.sliders[2].displayName + ": " + this.values[2];
+        }
 
     }
 
@@ -281,12 +282,15 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         this.findClosestSlider(rmc);
         this.redrawActiveSlider(rmc);
-        this.tooltipText.innerText = this.sliders[0].displayName + ": " +this.values[0] + "\n"
-            +  this.sliders[1].displayName + ": " +this.values[1] + "\n"
-            +  this.sliders[2].displayName + ": " +this.values[2];
+        if (this.tooltiptextdom != null) {
+            this.tooltiptextdom.innerText = this.sliders[0].displayName + ": " + this.values[0] + "\n"
+                + this.sliders[1].displayName + ": " + this.values[1] + "\n"
+                + this.sliders[2].displayName + ": " + this.values[2];
+            this.tooltiptextdom.style.visibility = "visible";
+            this.tooltiptextdom.style.opacity = 1;
+        }
 
-        this.tooltipText.style.visibility = "visible";
-        this.tooltipText.style.opacity = 1;
+
 
     }
 
@@ -301,8 +305,8 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         console.log (e)
         this.redrawActiveSlider(rmc);
-        this.tooltipText.style.top = 0 + "px";
-        this.tooltipText.style.left = 0 + "px";
+
+
     }
 
     /**
@@ -319,7 +323,8 @@ class Slider {
         }
         this.mouseDown = false;
         //this.activeSlider = null;
-        this.tooltipText.style.visibility = "hidden";
+        if (this.tooltiptextdom != null)
+            this.tooltiptextdom.style.visibility = "hidden";
     }
 
     /**
