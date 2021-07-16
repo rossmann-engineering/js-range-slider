@@ -289,8 +289,8 @@ class Slider {
         const rmc = this.getRelativeMouseOrTouchCoordinates(e);
         console.log (e)
         this.redrawActiveSlider(rmc);
-        this.tooltipText.style.top = e.screenY + "px";
-        this.tooltipText.style.left = e.screenX + "px";
+        this.tooltipText.style.top = e.offsetY + "px";
+        this.tooltipText.style.left = e.offsetX + "px";
     }
 
     /**
