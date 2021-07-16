@@ -1,5 +1,4 @@
 class Slider {
-
     /**
      * @constructor
      * 
@@ -28,6 +27,7 @@ class Slider {
         this.scale = scale;
         this.listener = null;
         this.currentValue = 0;
+        this.svgContainer = null;
         if (true) {
             this.sliderWidth = 400 / this.scale;                                     // Slider width
             this.sliderHeight = 400 / this.scale;                                    // Slider length
@@ -35,6 +35,7 @@ class Slider {
             this.cy = this.sliderHeight / 2;                            // Slider center Y coordinate
         }
     }
+
 
     /**
      * Draw sliders on init
@@ -46,22 +47,22 @@ class Slider {
         //this.createLegendUI();
 
         // Create and append SVG holder
-        const svgContainer = document.createElement('div');
-        svgContainer.classList.add('slider__data');
+        this.svgContainer = document.createElement('div');
+        this.svgContainer.classList.add('slider__data');
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('height', this.sliderWidth);
         svg.setAttribute('width', this.sliderHeight);
-        svgContainer.appendChild(svg);
-        this.container.appendChild(svgContainer);
+        this.svgContainer.appendChild(svg);
+        this.container.appendChild( this.svgContainer);
 
         // Draw sliders
         this.sliders.forEach((slider, index) => this.drawSingleSliderOnInit(svg, slider, index));
 
         // Event listeners
-        svgContainer.addEventListener('mousedown', this.mouseTouchStart.bind(this), false);
-        svgContainer.addEventListener('touchstart', this.mouseTouchStart.bind(this), false);
-        svgContainer.addEventListener('mousemove', this.mouseTouchMove.bind(this), false);
-        svgContainer.addEventListener('touchmove', this.mouseTouchMove.bind(this), false);
+        this.svgContainer.addEventListener('mousedown', this.mouseTouchStart.bind(this), false);
+        this.svgContainer.addEventListener('touchstart', this.mouseTouchStart.bind(this), false);
+        this.svgContainer.addEventListener('mousemove', this.mouseTouchMove.bind(this), false);
+        this.svgContainer.addEventListener('touchmove', this.mouseTouchMove.bind(this), false);
         window.addEventListener('mouseup', this.mouseTouchEnd.bind(this), false);
         window.addEventListener('touchend', this.mouseTouchEnd.bind(this), false);
     }
@@ -449,8 +450,7 @@ class Slider {
     findClosestSlider(rmc) {
         const mouseDistanceFromCenter = Math.hypot(rmc.x - this.cx, rmc.y - this.cy);
         const container = document.querySelector('.slider__data');
-        const sliderGroups = Array.from(container.querySelectorAll('g'));
-
+        const sliderGroups = Array.from(this.svgContainer.querySelectorAll('g'));
         // Get distances from client coordinates to each slider
         const distances = sliderGroups.map(slider => {
             const rad = parseInt(slider.getAttribute('rad'));
